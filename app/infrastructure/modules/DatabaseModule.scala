@@ -25,6 +25,7 @@ class DatabaseModule extends AbstractModule {
       .annotatedWith(Names.named("slave"))
       .toProvider(classOf[SlaveDatabaseProvider])
       .asEagerSingleton()
+    bind(classOf[TaskRepository]).to(classOf[TaskRepositoryImpl])
   }
 }
 
