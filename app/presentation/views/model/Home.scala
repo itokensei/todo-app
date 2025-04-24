@@ -4,7 +4,7 @@
  *
  */
 
-package model
+package presentation.views.model
 
 // Topページのviewvalue
 case class ViewValueHome(
