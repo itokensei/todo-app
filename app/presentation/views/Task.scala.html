@@ -1,16 +1,18 @@
-@(vv: presentation.views.model.ViewValueCommon, tasks: Seq[(String, String, domain.model.task.Status, String, domain.model.task.Color)])
+@import usecase.task.ShowTaskUseCaseDto
+@(vv: presentation.views.model.ViewValueCommon, tasks: Seq[ShowTaskUseCaseDto])
+
 @common.Default(vv){
 <ul>
     <li><a>カテゴリー一覧</a></li>
     <li><a>Todo一覧</a>
       <ul>
-          @tasks.map { case (title,body,state,categoryName,categoryColor) =>
+          @tasks.map { task =>
             <li>
-                <div><a style="width: 800px;">@title</a>
-                  <a style="background-color: @categoryColor.hexCode; color: white; padding: 2px; border-radius: 5px;">
-                    @categoryName</a><a> @state.name</a>
+                <div><a style="width: 800px;">@task.title</a>
+                  <a style="background-color: @task.categoryColor.hexCode; color: white; padding: 2px; border-radius: 5px;">
+                    @task.categoryName</a><a> @task.state.name</a>
                 </div>
-                <div style="padding-left: 40px; margin-bottom: 20px;">@body.</div>
+                <div style="padding-left: 40px; margin-bottom: 20px;">@task.body.</div>
             </li>
           }
       </ul>

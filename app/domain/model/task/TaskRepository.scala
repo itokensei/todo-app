@@ -1,10 +1,12 @@
 package domain.model.task
 
+import usecase.task.ShowTaskUseCaseDto
+
 import scala.concurrent.Future
 
 trait TaskRepository {
 
-  def fetchAll(): Future[Seq[(String, String, Status, String, Color)]]
+  def fetchAll(): Future[Seq[ShowTaskUseCaseDto]]
 
   /**
     * Get Task Data

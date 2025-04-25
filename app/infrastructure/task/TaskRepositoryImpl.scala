@@ -7,6 +7,7 @@ package infrastructure.task
 import domain.model.task.{ Task, TaskRepository }
 import ixias.slick.SlickRepository
 import ixias.slick.jdbc.MySQLProfile.api._
+import usecase.task.ShowTaskUseCaseDto
 
 import javax.inject._
 import scala.concurrent.{ ExecutionContext, Future }
@@ -24,7 +25,7 @@ class TaskRepositoryImpl @Inject() (
     val showData = for {
       (task, category) <- taskTable join categoryTable on (_.categoryId === _.id)
     } yield (task.title, task.body, task.state, category.name, category.color)
-    slave.run(showData.result)
+    slave.run(showData.result).map(_.map((ShowTaskUseCaseDto.apply _).tupled))
   }
 
   /**
