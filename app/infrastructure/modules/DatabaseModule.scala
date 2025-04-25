@@ -4,11 +4,12 @@ import com.google.inject.AbstractModule
 import com.google.inject.name.Names
 import com.zaxxer.hikari.HikariDataSource
 import domain.model.task.TaskRepository
-import infrastructure.task.TaskRepositoryImpl
+import infrastructure.task.{ TaskQueryServiceImpl, TaskRepositoryImpl }
 import ixias.slick.builder._
 import ixias.slick.jdbc.MySQLProfile.api.Database
 import ixias.slick.model.DataSourceName
 import play.api.inject.ApplicationLifecycle
+import usecase.task.{ ShowTaskUseCase, TaskQueryService }
 
 import javax.inject.{ Inject, Provider, Singleton }
 import scala.concurrent.Future
@@ -26,6 +27,7 @@ class DatabaseModule extends AbstractModule {
       .toProvider(classOf[SlaveDatabaseProvider])
       .asEagerSingleton()
     bind(classOf[TaskRepository]).to(classOf[TaskRepositoryImpl])
+    bind(classOf[TaskQueryService]).to(classOf[TaskQueryServiceImpl])
   }
 }
 

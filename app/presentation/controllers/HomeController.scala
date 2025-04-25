@@ -4,17 +4,17 @@
 
 package presentation.controllers
 
-import domain.model.task.TaskRepository
 import play.api.mvc._
 import presentation.views.model.ViewValueHome
 import presentation.views
+import usecase.task.ShowTaskUseCase
 
 import javax.inject._
 
 @Singleton
 class HomeController @Inject() (
   val controllerComponents: ControllerComponents,
-  taskRepository:           TaskRepository,
+  showTaskUseCase:          ShowTaskUseCase,
 ) extends BaseController {
   def index() = Action.async {
     val vv = ViewValueHome(
@@ -23,7 +23,7 @@ class HomeController @Inject() (
       jsSrc  = Seq("main.js")
     )
 
-    val future = taskRepository.fetchAll()
+    val future = showTaskUseCase.execute()
     future.map(allTasks => Ok(views.html.Task(vv, allTasks)))(controllerComponents.executionContext)
   }
 }

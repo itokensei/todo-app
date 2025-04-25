@@ -1,17 +1,8 @@
 package domain.model.task
 
-import usecase.task.ShowTaskUseCaseDto
-
 import scala.concurrent.Future
 
 trait TaskRepository {
-
-  def fetchAll(): Future[Seq[ShowTaskUseCaseDto]]
-
-  /**
-    * Get Task Data
-    */
-  def getById(id: Task.Id): Future[Option[Task]]
 
   /**
     * Add Task Data
