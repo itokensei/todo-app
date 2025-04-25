@@ -1,6 +1,6 @@
 package infrastructure.task
 
-import domain.model.task.{Category, Color}
+import domain.model.task.{ Category, Color }
 import ixias.slick.jdbc.MySQLProfile.api._
 
 import java.time.LocalDateTime

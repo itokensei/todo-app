@@ -12,9 +12,9 @@ import presentation.views
 import javax.inject._
 
 @Singleton
-class HomeController @Inject()(
-                                 val controllerComponents: ControllerComponents,
-                                 taskRepository:           TaskRepository,
+class HomeController @Inject() (
+  val controllerComponents: ControllerComponents,
+  taskRepository:           TaskRepository,
 ) extends BaseController {
   def index() = Action.async {
     val vv = ViewValueHome(

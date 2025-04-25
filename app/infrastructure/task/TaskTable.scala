@@ -1,6 +1,6 @@
 package infrastructure.task
 
-import domain.model.task.{Category, Status, Task}
+import domain.model.task.{ Category, Status, Task }
 import ixias.slick.jdbc.MySQLProfile.api._
 
 import java.time.LocalDateTime
@@ -19,8 +19,7 @@ case class TaskTable(tag: Tag) extends Table[Task](tag, "to_do") {
       Task(id = id, categoryId = categoryId, title = title, body = body, state = state, updatedAt = updatedAt, createdAt = createdAt)
     },
     (Task.unapply _).andThen(_.map(_.copy(
-        _6 = LocalDateTime.now()
-      )
-    ))
+      _6 = LocalDateTime.now()
+    )))
   )
 }

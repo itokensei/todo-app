@@ -4,18 +4,18 @@
 
 package infrastructure.task
 
-import domain.model.task.{Task, TaskRepository}
+import domain.model.task.{ Task, TaskRepository }
 import ixias.slick.SlickRepository
 import ixias.slick.jdbc.MySQLProfile.api._
 
 import javax.inject._
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class TaskRepositoryImpl @Inject() (
   @Named("master") master: Database,
   @Named("slave") slave:   Database
-)(implicit val ec: ExecutionContext) extends SlickRepository[Task.Id, Task] with TaskRepository {
+)(implicit val ec:         ExecutionContext) extends SlickRepository[Task.Id, Task] with TaskRepository {
 
   val taskTable     = TableQuery[TaskTable]
   val categoryTable = TableQuery[CategoryTable]
