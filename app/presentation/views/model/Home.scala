@@ -1,10 +1,8 @@
 /**
- *
- * to do sample project
- *
- */
+  * to do sample project
+  */
 
-package model
+package presentation.views.model
 
 // Topページのviewvalue
 case class ViewValueHome(
@@ -12,4 +10,3 @@ case class ViewValueHome(
   cssSrc: Seq[String],
   jsSrc:  Seq[String],
 ) extends ViewValueCommon
-
