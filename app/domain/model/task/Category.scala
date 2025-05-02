@@ -2,13 +2,17 @@ package domain.model.task
 
 import ixias.model._
 import ixias.util.EnumStatus
+import ixias.util.json.JsonEnvReads
+import play.api.libs.json.Reads
 
 import java.time.LocalDateTime
 
 case class Category(id: Option[Category.Id], name: String, slug: String, color: Color, updatedAt: LocalDateTime = NOW, createdAt: LocalDateTime = NOW) extends EntityModel[Category.Id]
-object Category {
+object Category extends JsonEnvReads {
   val Id = the[Identity[Id]]
   type Id = Long @@ Category
+
+  implicit val reads: Reads[Id] = idAsNumberReads[Id]
 }
 
 sealed abstract class Color(val code: Short, val hexCode: String) extends EnumStatus
