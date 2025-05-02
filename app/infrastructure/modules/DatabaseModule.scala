@@ -9,7 +9,7 @@ import ixias.slick.builder._
 import ixias.slick.jdbc.MySQLProfile.api.Database
 import ixias.slick.model.DataSourceName
 import play.api.inject.ApplicationLifecycle
-import usecase.task.{ ShowTaskUseCase, TaskQueryService }
+import usecase.task.TaskQueryService
 
 import javax.inject.{ Inject, Provider, Singleton }
 import scala.concurrent.Future
