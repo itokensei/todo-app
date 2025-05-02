@@ -23,7 +23,7 @@
 </form>
 
 <script>
-
+  const csrfToken = '@CSRF.getToken.value';
   console.log(csrfToken)
   function sendTaskData() {
     const title = document.getElementById('title').value;
@@ -47,7 +47,8 @@
     fetch('/task', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Csrf-Token': csrfToken // ここで取得したトークンを設定
       },
       body: JSON.stringify(jsonData)
     })
