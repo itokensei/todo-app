@@ -5,10 +5,10 @@ import ixias.util.EnumStatus
 
 import java.time.LocalDateTime
 
-case class Category(id: Option[Category.Id], name: String, slug: String, color: Color, updatedAt: LocalDateTime = NOW, createdAt: LocalDateTime = NOW) extends EntityModel[Task.Id]
+case class Category(id: Option[Category.Id], name: String, slug: String, color: Color, updatedAt: LocalDateTime = NOW, createdAt: LocalDateTime = NOW) extends EntityModel[Category.Id]
 object Category {
   val Id = the[Identity[Id]]
-  type Id = Long @@ Task
+  type Id = Long @@ Category
 }
 
 sealed abstract class Color(val code: Short, val hexCode: String) extends EnumStatus
