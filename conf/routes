@@ -10,4 +10,5 @@ GET     /                             presentation.controllers.HomeController.in
 GET     /assets/*file                 controllers.Assets.versioned(path="/public", file)
 
 # Task
++nocsrf
 POST    /task                         presentation.controllers.HomeController.add()

@@ -8,7 +8,9 @@ trait TaskQueryService {
   def fetchAll(): Future[Seq[ShowTaskUseCaseDto]]
 
   /**
-   * Get Task Data
-   */
+    * Get Task Data
+    */
   def getById(id: Task.Id): Future[Option[Task]]
+
+  def fetchAllCategoris(): Future[Seq[ShowCategoryUseCaseDto]]
 }

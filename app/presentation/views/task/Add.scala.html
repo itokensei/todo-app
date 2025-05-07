@@ -1,0 +1,63 @@
+@import usecase.task.ShowCategoryUseCaseDto
+@import helper._
+@(categories: Seq[ShowCategoryUseCaseDto])(implicit request: MessagesRequestHeader)
+
+<form id="taskForm">
+  @CSRF.formField
+  <div>
+    <label for="title">タイトル:</label>
+    <input type="text" id="title" name="title">
+  </div>
+  <div>
+    <label for="body">内容:</label>
+    <textarea id="body" name="body"></textarea>
+  </div>
+  <div>
+    <label>カテゴリ:</label>
+    @for(category <- categories) {
+    <input type="radio" id="categoryId_@category.id" name="categoryRadio" value="@category.id">
+    <label for="categoryId_@category.id">@category.name</label>
+    }
+  </div>
+  <button type="button" onclick="sendTaskData()">送信</button>
+</form>
+
+<script>
+
+  console.log(csrfToken)
+  function sendTaskData() {
+    const title = document.getElementById('title').value;
+    const body = document.getElementById('body').value;
+    const categoryIdElement = document.querySelector('input[name="categoryRadio"]:checked');
+    let categoryId;
+
+    if (categoryIdElement) {
+      categoryId = parseInt(categoryIdElement.value);
+    } else {
+      alert('カテゴリを選択してください。');
+      return;
+    }
+
+    const jsonData = {
+      title: title,
+      body: body,
+      categoryId: categoryId
+    };
+
+    fetch('/task', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonData)
+    })
+    .then(data => {
+      console.log('Success:', data);
+      // 送信成功時の処理（例：メッセージ表示、画面遷移など）
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      // エラー発生時の処理
+    });
+  }
+</script>
