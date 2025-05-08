@@ -16,6 +16,8 @@ class TaskQueryServiceImpl @Inject() (
   val categoryTable = TableQuery[CategoryTable]
 
   def fetchAll(): Future[Seq[ShowTaskUseCaseDto]] = {
+    // No matching Shape found.
+    // Slick does not know how to map the given types.
     val showData = for {
       (task, category) <- taskTable join categoryTable on (_.categoryId === _.id)
     } yield (task.title, task.body, task.state, category.name, category.color)

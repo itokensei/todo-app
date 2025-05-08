@@ -14,6 +14,8 @@ import usecase.task.{ AddTaskUseCase, ShowCategoryUseCase, ShowTaskUseCase }
 import javax.inject._
 import scala.concurrent.Future
 
+import cats.syntax.either._
+
 @Singleton
 class HomeController @Inject() (
   implicit
@@ -40,10 +42,10 @@ class HomeController @Inject() (
   }
 
   def add() = Action.async { implicit request =>
-    JsonHelper.bindFromRequest[AddTaskRequest].fold(
-      formWithErrors => Future(formWithErrors),
-      addTaskRequest =>
-        addTaskUseCase.execute(Task(addTaskRequest)).map(_ => Redirect(routes.HomeController.index()))
-    )
+    val addTaskExecution = for {
+      addTaskRequest <- JsonHelper.bindFromRequest[AddTaskRequest]
+      task           <- Task.create(addTaskRequest).toEither.leftMap(errorMessages => BadRequest(errorMessages.toList.mkString("\n")))
+    } yield addTaskUseCase.execute(task)
+    addTaskExecution.fold(Future.successful, _.map(_ => Redirect(routes.HomeController.index())))
   }
 }
