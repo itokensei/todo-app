@@ -52,11 +52,11 @@ class HomeController @Inject() (
         "body"       -> text,
         "categoryId" -> optional(longNumber)
       ) {
-        case (title, body, rawCategoryId) => AddTaskRequest(title, body, rawCategoryId.map(tag[Category].apply[Long]))
+        case (title, body, rawCategoryId) => AddTaskRequest(title, body, rawCategoryId.map(Category.Id.apply))
       }(request =>
         AddTaskRequest.unapply(request).map {
-          case (title, body, Some(categoryId)) => (title, body, Some(categoryId.asInstanceOf[Long]))
-          case x => x
+          case (title, body, Some(categoryId)) => (title, body, Some(Category.Id.unwrap(categoryId)))
+          case x                               => x
         }
       )
     )
