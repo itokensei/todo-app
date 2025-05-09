@@ -21,7 +21,7 @@ libraryDependencies ++= Seq(
   // まずはこの1つから
   "net.ixias"      %% "ixias"               % "2.1.1",
   "net.ixias"      %% "ixias-slick"         % "2.1.1", // Slickを使用したDBアクセス
-  "net.ixias" %% "ixias-play-core" % "2.1.1",
+  "net.ixias"      %% "ixias-play-core"     % "2.1.1",
   "mysql"          % "mysql-connector-java" % "8.0.33",
   "ch.qos.logback" % "logback-classic"      % "1.1.+",
 )

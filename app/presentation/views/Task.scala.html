@@ -1,8 +1,11 @@
-@import usecase.task.ShowTaskUseCaseDto
-@(vv: presentation.views.model.ViewValueCommon, tasks: Seq[ShowTaskUseCaseDto])
+@import usecase.task._
+@import helper._
+@import presentation.controllers._
+@(vv: presentation.views.model.ViewValueCommon, tasks: Seq[ShowTaskUseCaseDto], categories: Seq[ShowCategoryUseCaseDto])(implicit request: MessagesRequestHeader)
 
 @common.Default(vv){
 <ul>
+    <li>@task.Add(categories)</li>
     <li><a>カテゴリー一覧</a></li>
     <li><a>Todo一覧</a>
       <ul>
@@ -17,6 +20,5 @@
           }
       </ul>
     </li>
-
 </ul>
 }
