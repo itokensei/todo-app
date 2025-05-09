@@ -4,8 +4,11 @@
 
 package presentation.controllers
 
-import domain.model.task.Task
+import domain.model.task.{ Category, Task }
+import ixias.model.tag
 import ixias.play.api.mvc.JsonHelper
+import play.api.data.Form
+import play.api.data.Forms.{ longNumber, mapping, nonEmptyText, optional, text }
 import play.api.mvc._
 import presentation.views
 import presentation.views.model.ViewValueHome
@@ -40,6 +43,24 @@ class HomeController @Inject() (
   }
 
   def add() = Action.async { implicit request =>
+    // type mismatch;
+    // found   : x$1.type (with underlying type Long)
+    // required: shapeless.tag.Tagged[domain.model.task.Category] with Long
+    val form = Form(
+      mapping(
+        "title"      -> nonEmptyText,
+        "body"       -> text,
+        "categoryId" -> optional(longNumber)
+      ) {
+        case (title, body, rawCategoryId) => AddTaskRequest(title, body, rawCategoryId.map(tag[Category].apply(_)))
+      }(request =>
+        AddTaskRequest.unapply(request).map {
+          case (title, body, Some(categoryId)) => (title, body, Some(categoryId.asInstanceOf[Long]))
+          case x => x
+        }
+      )
+    )
+
     JsonHelper.bindFromRequest[AddTaskRequest].fold(
       formWithErrors => Future(formWithErrors),
       addTaskRequest =>
