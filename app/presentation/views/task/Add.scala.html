@@ -34,8 +34,7 @@
     if (categoryIdElement) {
       categoryId = parseInt(categoryIdElement.value);
     } else {
-      alert('カテゴリを選択してください。');
-      return;
+      categoryId = null;
     }
 
     const jsonData = {

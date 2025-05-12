@@ -1,0 +1,11 @@
+@(task: usecase.task.ShowTaskUseCaseDto)
+@backgroundColor = @{task.categoryColor.map(_.hexCode).getOrElse("#000000")}
+@categoryName = @{task.categoryName.getOrElse("未分類")}
+
+<li>
+  <div><a style="width: 800px;">@task.title</a>
+    <a style="background-color: @backgroundColor; color: white; padding: 2px; border-radius: 5px;">
+      @categoryName</a><a> @task.state.name</a>
+  </div>
+  <div style="padding-left: 40px; margin-bottom: 20px;">@task.body.</div>
+</li>

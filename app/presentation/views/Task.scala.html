@@ -9,15 +9,7 @@
     <li><a>カテゴリー一覧</a></li>
     <li><a>Todo一覧</a>
       <ul>
-          @tasks.map { task =>
-            <li>
-                <div><a style="width: 800px;">@task.title</a>
-                  <a style="background-color: @task.categoryColor.hexCode; color: white; padding: 2px; border-radius: 5px;">
-                    @task.categoryName</a><a> @task.state.name</a>
-                </div>
-                <div style="padding-left: 40px; margin-bottom: 20px;">@task.body.</div>
-            </li>
-          }
+          @tasks.map(todo => task.TaskElement(todo))
       </ul>
     </li>
 </ul>
