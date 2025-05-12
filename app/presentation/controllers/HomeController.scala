@@ -6,6 +6,7 @@ package presentation.controllers
 
 import domain.model.task.Task
 import ixias.play.api.mvc.JsonHelper
+import play.api.libs.json.JsObject
 import play.api.mvc._
 import presentation.views
 import presentation.views.model.ViewValueHome
@@ -43,7 +44,7 @@ class HomeController @Inject() (
     JsonHelper.bindFromRequest[AddTaskRequest].fold(
       formWithErrors => Future(formWithErrors),
       addTaskRequest =>
-        addTaskUseCase.execute(Task(addTaskRequest)).map(_ => Redirect(routes.HomeController.index()))
+        addTaskUseCase.execute(Task(addTaskRequest)).map(_ => Ok(JsObject.empty))
     )
   }
 }

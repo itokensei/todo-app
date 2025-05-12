@@ -52,13 +52,30 @@
       },
       body: JSON.stringify(jsonData)
     })
-    .then(data => {
-      console.log('Success:', data);
-      // 送信成功時の処理（例：メッセージ表示、画面遷移など）
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return response.json().then(error => {
+          throw error;
+        });
+      }
     })
-    .catch((error) => {
+    .then(newTask => {
+      alert('successfully added. please reload.'); // TODO ここで画面を非同期に更新する
+      document.getElementById('taskForm').reset();
+    })
+    .catch(error => {
       console.error('Error:', error);
-      // エラー発生時の処理
+      let key;
+      if (error.hasOwnProperty('obj.title')) {
+        key = 'obj.title'
+      } else if (error.hasOwnProperty('obj.body')) {
+        key = 'obj.body'
+      } else {
+        key = 'obj.categoryId'
+      }
+      alert('Failed to add. ' + error[key][0].msg[0]);
     });
   }
 </script>
