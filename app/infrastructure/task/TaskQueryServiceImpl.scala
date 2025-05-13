@@ -33,4 +33,7 @@ class TaskQueryServiceImpl @Inject() (
     val showData = categoryTable.map(category => (category.id, category.name, category.slug, category.color))
     slave.run(showData.result).map(_.map((ShowCategoryUseCaseDto.apply _).tupled))
   }
+
+  def getCategoryById(id: Option[Category.Id]): Future[Option[Category]] =
+    slave.run(categoryTable.filter(_.id === id).result.headOption)
 }
