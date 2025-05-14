@@ -15,9 +15,7 @@ case class TaskTable(tag: Tag) extends Table[Task](tag, "to_do") {
   def createdAt  = column[LocalDateTime]("created_at", Ts)
 
   def * = (id.?, categoryId, title, body, state, updatedAt, createdAt).<>(
-    { case (id, categoryId, title, body, state, updatedAt, createdAt) =>
-      Task(id = id, categoryId = categoryId, title = title, body = body, state = state, updatedAt = updatedAt, createdAt = createdAt)
-    },
+    (Task.apply _).tupled,
     (Task.unapply _).andThen(_.map(_.copy(
       _6 = LocalDateTime.now()
     )))
