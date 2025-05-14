@@ -2,7 +2,7 @@ package usecase.task
 
 import domain.model.task.{ Color, Status }
 
-case class ShowTaskUseCaseDto(
+case class TaskItemDto(
   title:         String,
   body:          String,
   state:         Status,

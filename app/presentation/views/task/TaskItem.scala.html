@@ -1,4 +1,4 @@
-@(task: usecase.task.ShowTaskUseCaseDto)
+@(task: usecase.task.TaskItemDto)
 @backgroundColor = @{task.categoryColor.map(_.hexCode).getOrElse("#000000")}
 @categoryName = @{task.categoryName.getOrElse("未分類")}
 
