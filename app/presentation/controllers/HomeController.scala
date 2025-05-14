@@ -4,23 +4,19 @@
 
 package presentation.controllers
 
-import ixias.play.api.mvc.JsonHelper
-import play.api.libs.json.Json
 import play.api.mvc._
 import presentation.views
 import presentation.views.model.ViewValueHome
-import usecase.task.{ AddTaskUseCase, ShowCategoryUseCase, ShowTaskUseCase }
+import usecase.task.{ ShowCategoryUseCase, ShowTaskUseCase }
 
 import javax.inject._
-import scala.concurrent.Future
 
 @Singleton
 class HomeController @Inject() (
   implicit
   val mcc:             MessagesControllerComponents,
   showTaskUseCase:     ShowTaskUseCase,
-  showCategoryUseCase: ShowCategoryUseCase,
-  addTaskUseCase:      AddTaskUseCase
+  showCategoryUseCase: ShowCategoryUseCase
 ) extends MessagesAbstractController(mcc) {
   implicit val ec: scala.concurrent.ExecutionContext = mcc.executionContext
 
@@ -37,13 +33,5 @@ class HomeController @Inject() (
       tasks      <- tasksFuture
       categories <- categoriesFuture
     } yield Ok(views.html.Task(vv, tasks, categories))
-  }
-
-  def add() = Action.async { implicit request =>
-    JsonHelper.bindFromRequest[AddTaskRequest].fold(
-      formWithErrors => Future(formWithErrors),
-      addTaskRequest =>
-        addTaskUseCase.execute(addTaskRequest).map(task => Ok(Json.toJson(task)))
-    )
   }
 }
