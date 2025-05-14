@@ -7,7 +7,14 @@ import play.api.libs.json._
 
 import java.time.LocalDateTime
 
-case class Category(id: Option[Category.Id], name: String, slug: String, color: Color, updatedAt: LocalDateTime = NOW, createdAt: LocalDateTime = NOW) extends EntityModel[Category.Id]
+case class Category(
+  id:        Option[Category.Id],
+  name:      String,
+  slug:      String,
+  color:     Color,
+  updatedAt: LocalDateTime = NOW,
+  createdAt: LocalDateTime = NOW
+)               extends EntityModel[Category.Id]
 object Category extends JsonEnvReads {
   val Id = the[Identity[Id]]
   type Id = Long @@ Category

@@ -7,8 +7,15 @@ import play.api.libs.json._
 
 import java.time.LocalDateTime
 
-case class Task(id: Option[Task.Id], categoryId: Option[Category.Id], title: String, body: String = "", state: Status = Todo, updatedAt: LocalDateTime = NOW, createdAt: LocalDateTime = NOW)
-  extends EntityModel[Task.Id]
+case class Task(
+  id:         Option[Task.Id],
+  categoryId: Option[Category.Id],
+  title:      String,
+  body:       String        = "",
+  state:      Status        = Todo,
+  updatedAt:  LocalDateTime = NOW,
+  createdAt:  LocalDateTime = NOW
+) extends EntityModel[Task.Id]
 object Task {
   val Id = the[Identity[Id]]
   type Id = Long @@ Task
