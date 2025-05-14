@@ -2,6 +2,7 @@ package usecase.task
 
 import cats.implicits.none
 import domain.model.task.{ Category, Task, TaskRepository }
+import presentation.controllers.AddTaskRequest
 
 import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
@@ -12,11 +13,18 @@ class AddTaskUseCase @Inject() (
   taskQueryService:              TaskQueryService,
   implicit val executionContext: ExecutionContext
 ) {
-  def execute(taskWithNoId: Task#WithNoId): Future[ShowTaskUseCaseDto] = {
+  def execute(addTaskRequest: AddTaskRequest): Future[ShowTaskUseCaseDto] = {
+    def taskWithNoId   = Task(
+      id         = None,
+      title      = addTaskRequest.title,
+      body       = addTaskRequest.body,
+      categoryId = addTaskRequest.categoryId
+    ).toWithNoId
+    val execution      = taskRepository.add(taskWithNoId)
     val task           = taskWithNoId.v
     val categoryFuture = task.categoryId.fold(Future.successful(none[Category]))(taskQueryService.getCategoryById)
     for {
-      _        <- taskRepository.add(taskWithNoId)
+      _        <- execution
       category <- categoryFuture
     } yield ShowTaskUseCaseDto(
       title         = task.title,
