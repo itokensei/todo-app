@@ -4,6 +4,7 @@ import domain.model.task.Status.Todo
 import ixias.model._
 import ixias.util.EnumStatus
 import play.api.libs.json._
+import ixias.util.json.JsonEnvReads
 
 import java.time.LocalDateTime
 
@@ -15,10 +16,12 @@ case class Task(
   state:      Status        = Todo,
   updatedAt:  LocalDateTime = NOW,
   createdAt:  LocalDateTime = NOW
-) extends EntityModel[Task.Id]
-object Task {
+)           extends EntityModel[Task.Id]
+object Task extends JsonEnvReads {
   val Id = the[Identity[Id]]
   type Id = Long @@ Task
+
+  implicit val reads: Reads[Id] = idAsNumberReads[Id]
 }
 
 sealed abstract class Status(val code: Short, val name: String) extends EnumStatus
@@ -32,4 +35,7 @@ object Status extends EnumStatus.Of[Status] {
       "code" -> JsNumber(o.code),
       "name" -> JsString(o.name)
     ))
+
+  object Reads extends JsonEnvReads
+  implicit val reads: Reads[Status] = Reads.enumReads[Status](Status)
 }
