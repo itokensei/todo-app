@@ -13,7 +13,7 @@ class AddTaskUseCase @Inject() (
   taskQueryService:              TaskQueryService,
   implicit val executionContext: ExecutionContext
 ) {
-  def execute(addTaskRequest: AddTaskRequest): Future[ShowTaskUseCaseDto] = {
+  def execute(addTaskRequest: AddTaskRequest): Future[TaskItemDto] = {
     def taskWithNoId   = Task(
       id         = None,
       title      = addTaskRequest.title,
@@ -26,7 +26,7 @@ class AddTaskUseCase @Inject() (
     for {
       _        <- execution
       category <- categoryFuture
-    } yield ShowTaskUseCaseDto(
+    } yield TaskItemDto(
       title         = task.title,
       body          = task.body,
       state         = task.state,

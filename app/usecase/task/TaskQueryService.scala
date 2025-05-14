@@ -5,7 +5,7 @@ import domain.model.task.{ Category, Task }
 import scala.concurrent.Future
 
 trait TaskQueryService {
-  def fetchAll(): Future[Seq[ShowTaskUseCaseDto]]
+  def fetchAll(): Future[Seq[TaskItemDto]]
 
   /**
     * Get Task Data

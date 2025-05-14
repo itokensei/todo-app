@@ -1,7 +1,7 @@
 @import usecase.task._
 @import helper._
 @import presentation.controllers._
-@(vv: presentation.views.model.ViewValueCommon, tasks: Seq[ShowTaskUseCaseDto], categories: Seq[ShowCategoryUseCaseDto])(implicit request: MessagesRequestHeader)
+@(vv: presentation.views.model.ViewValueCommon, tasks: Seq[TaskItemDto], categories: Seq[ShowCategoryUseCaseDto])(implicit request: MessagesRequestHeader)
 
 @nullCategoryName = @{"未分類"}
 @nullCategoryColor = @{"#000000"}
