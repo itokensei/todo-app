@@ -4,7 +4,6 @@
 
 package presentation.controllers
 
-import domain.model.task.Task
 import ixias.play.api.mvc.JsonHelper
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -45,7 +44,7 @@ class HomeController @Inject() (
     JsonHelper.bindFromRequest[AddTaskRequest].fold(
       formWithErrors => Future(formWithErrors),
       addTaskRequest =>
-        addTaskUseCase.execute(Task(addTaskRequest)).map { task =>
+        addTaskUseCase.execute(addTaskRequest).map { task =>
           val addedTaskHtml = TaskElement(task).toString()
           Ok(Json.toJson(addedTaskHtml))
         }
