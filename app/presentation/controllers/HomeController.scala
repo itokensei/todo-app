@@ -6,9 +6,10 @@ package presentation.controllers
 
 import domain.model.task.Task
 import ixias.play.api.mvc.JsonHelper
-import play.api.libs.json.JsObject
+import play.api.libs.json.Json
 import play.api.mvc._
 import presentation.views
+import presentation.views.html.task.TaskElement
 import presentation.views.model.ViewValueHome
 import usecase.task.{ AddTaskUseCase, ShowCategoryUseCase, ShowTaskUseCase }
 
@@ -44,7 +45,10 @@ class HomeController @Inject() (
     JsonHelper.bindFromRequest[AddTaskRequest].fold(
       formWithErrors => Future(formWithErrors),
       addTaskRequest =>
-        addTaskUseCase.execute(Task(addTaskRequest)).map(_ => Ok(JsObject.empty))
+        addTaskUseCase.execute(Task(addTaskRequest)).map { task =>
+          val addedTaskHtml = TaskElement(task).toString()
+          Ok(Json.toJson(addedTaskHtml))
+        }
     )
   }
 }
