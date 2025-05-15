@@ -3,6 +3,7 @@ package domain.model.task
 import domain.model.task.Status.Todo
 import ixias.model._
 import ixias.util.EnumStatus
+import ixias.util.json.JsonEnvWrites
 import presentation.controllers.AddTaskRequest
 
 import java.time.LocalDateTime
@@ -26,4 +27,7 @@ object Status extends EnumStatus.Of[Status] {
   case object Todo    extends Status(code = 0, name = "TODO(着手前)")
   case object Ongoing extends Status(code = 1, name = "進行中")
   case object Done    extends Status(code = 2, name = "完了")
+
+  object Writes extends JsonEnvWrites
+  implicit val writes = Writes.enumStatus[Status]
 }

@@ -45,10 +45,7 @@ class HomeController @Inject() (
     JsonHelper.bindFromRequest[AddTaskRequest].fold(
       formWithErrors => Future(formWithErrors),
       addTaskRequest =>
-        addTaskUseCase.execute(Task(addTaskRequest)).map { task =>
-          val addedTaskHtml = TaskElement(task).toString()
-          Ok(Json.toJson(addedTaskHtml))
-        }
+        addTaskUseCase.execute(Task(addTaskRequest)).map(task => Ok(Json.toJson(task)))
     )
   }
 }

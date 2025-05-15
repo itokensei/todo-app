@@ -60,10 +60,12 @@
         });
       }
     })
-    .then(newTaskHtml => {
+    .then(newTask => {
+      const task = newTask
       const taskList = document.getElementById('task-list');
-      const newListItem = document.createElement('li');
-      newListItem.innerHTML = newTaskHtml;
+      console.log(newTask);
+      const newListItem = document.createElement('li')
+      newListItem.innerHTML = `@Hoge(newTask.title)`
       taskList.appendChild(newListItem);
 
       document.getElementById('taskForm').reset();

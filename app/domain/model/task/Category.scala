@@ -2,8 +2,8 @@ package domain.model.task
 
 import ixias.model._
 import ixias.util.EnumStatus
-import ixias.util.json.JsonEnvReads
-import play.api.libs.json.Reads
+import ixias.util.json.{JsonEnvReads, JsonEnvWrites}
+import play.api.libs.json.{Reads, Writes}
 
 import java.time.LocalDateTime
 
@@ -25,4 +25,7 @@ object Color extends EnumStatus.Of[Color] {
   case object Purple    extends Color(code = 5, hexCode = "#9B59B6")
   case object LightBlue extends Color(code = 6, hexCode = "#5DADE2")
   case object Gray      extends Color(code = 7, hexCode = "#808080")
+
+  object Writes extends JsonEnvWrites
+  implicit val writes: Writes[Color] = Writes.enumStatus[Color]
 }
