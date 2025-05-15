@@ -47,6 +47,7 @@
     fetch('/task', {
       method: 'POST',
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Csrf-Token': csrfToken // ここで取得したトークンを設定
       },
