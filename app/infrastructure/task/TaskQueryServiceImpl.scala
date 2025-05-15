@@ -34,6 +34,6 @@ class TaskQueryServiceImpl @Inject() (
     slave.run(showData.result).map(_.map((ShowCategoryUseCaseDto.apply _).tupled))
   }
 
-  def getCategoryById(id: Option[Category.Id]): Future[Option[Category]] =
+  def getCategoryById(id: Category.Id): Future[Option[Category]] =
     slave.run(categoryTable.filter(_.id === id).result.headOption)
 }

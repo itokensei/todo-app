@@ -14,5 +14,5 @@ trait TaskQueryService {
 
   def fetchAllCategoris(): Future[Seq[ShowCategoryUseCaseDto]]
 
-  def getCategoryById(categoryId: Option[Category.Id]): Future[Option[Category]]
+  def getCategoryById(categoryId: Category.Id): Future[Option[Category]]
 }
