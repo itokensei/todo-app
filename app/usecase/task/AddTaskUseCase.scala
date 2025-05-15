@@ -13,7 +13,7 @@ class AddTaskUseCase @Inject() (
 ) {
   def execute(taskWithNoId: Task#WithNoId): Future[ShowTaskUseCaseDto] = {
     val task           = taskWithNoId.v
-    val categoryFuture = task.categoryId.fold(Future(Option.empty[Category]))(taskQueryService.getCategoryById)
+    val categoryFuture = task.categoryId.fold(Future.successful(None))(taskQueryService.getCategoryById)
     for {
       _        <- taskRepository.add(taskWithNoId)
       category <- categoryFuture
