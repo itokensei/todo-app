@@ -1,5 +1,6 @@
 package usecase.task
 
+import cats.implicits.none
 import domain.model.task.{ Category, Task, TaskRepository }
 
 import javax.inject.{ Inject, Singleton }
@@ -13,7 +14,7 @@ class AddTaskUseCase @Inject() (
 ) {
   def execute(taskWithNoId: Task#WithNoId): Future[ShowTaskUseCaseDto] = {
     val task           = taskWithNoId.v
-    val categoryFuture = task.categoryId.fold(Future.successful(None))(taskQueryService.getCategoryById)
+    val categoryFuture = task.categoryId.fold(Future.successful(none[Category]))(taskQueryService.getCategoryById)
     for {
       _        <- taskRepository.add(taskWithNoId)
       category <- categoryFuture
