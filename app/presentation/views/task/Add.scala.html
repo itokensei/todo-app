@@ -60,14 +60,13 @@
         });
       }
     })
-    .then(newTask => {
-      const task = newTask
-      const taskList = document.getElementById('task-list');
-      console.log(newTask);
-      const newListItem = document.createElement('li')
-      newListItem.innerHTML = `@Hoge(newTask.title)`
-      taskList.appendChild(newListItem);
-
+    .then(task => {
+      console.log(task);
+      if (task.categoryColor) {
+        appendChildFromTemplate(task.title, task.categoryName, task.categoryColor.hexCode, task.state.name, task.body);
+      } else {
+        appendChildFromTemplate(task.title, task.categoryName, null, task.state.name, task.body);
+      }
       document.getElementById('taskForm').reset();
     })
     .catch(error => {
