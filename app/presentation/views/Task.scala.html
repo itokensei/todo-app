@@ -3,13 +3,21 @@
 @import presentation.controllers._
 @(vv: presentation.views.model.ViewValueCommon, tasks: Seq[ShowTaskUseCaseDto], categories: Seq[ShowCategoryUseCaseDto])(implicit request: MessagesRequestHeader)
 
+@nullCategoryName = @{"未分類"}
+@nullCategoryColor = @{"#000000"}
+
 @common.Default(vv){
 <ul>
     <li>@task.Add(categories)</li>
     <li><a>カテゴリー一覧</a></li>
     <li><a>Todo一覧</a>
-      <ul id="task-list">
-          @tasks.map(todo => task.TaskElement(todo))
+      <ul id="taskList">
+          @task.TaskItem(nullCategoryName, nullCategoryColor)
+          <script>
+          @tasks.map{task =>
+              appendChildFromTemplate('@task.title', '@{task.categoryName.getOrElse(nullCategoryName)}', '@{task.categoryColor.fold(nullCategoryColor)(_.hexCode)}', '@task.state.name', '@task.body')
+          }
+          </script>
       </ul>
     </li>
 </ul>

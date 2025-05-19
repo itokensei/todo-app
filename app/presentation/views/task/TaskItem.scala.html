@@ -1,0 +1,33 @@
+@(nullCategoryName: String, nullCategoryColor: String)
+
+<template id="taskItemTemplate">
+  <li>
+    <div><a class="title" style="width: 800px;"></a>
+      <a class="categoryName" style="background-color: @nullCategoryColor; color: white; padding: 2px; border-radius: 5px;">
+        @nullCategoryName</a><a class="status"></a>
+    </div>
+    <div class="body" style="padding-left: 40px; margin-bottom: 20px;"></div>
+  </li>
+</template>
+
+<script>
+  function appendChildFromTemplate(title, categoryName, colorHexCode, status, body) {
+    if ("content" in document.createElement('template')) {
+      var template = document.getElementById('taskItemTemplate');
+      var clone = template.content.cloneNode(true);
+      clone.querySelector('.title').textContent = title;
+      if (categoryName) {
+        clone.querySelector('.categoryName').textContent = categoryName;
+      };
+      if (colorHexCode) {
+        clone.querySelector('.categoryName').style.backgroundColor = colorHexCode;
+      };
+      clone.querySelector('.status').textContent = status;
+      clone.querySelector('.body').textContent = body;
+      document.getElementById('taskList').appendChild(clone);
+    } else {
+      console.error('Unsupported Feature: The HTML <template> element is not recognized by your browser.')
+      alert('Successfully added to the database, but the webpage failed to update. Please reload.　')
+    }
+  }
+</script>
