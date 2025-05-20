@@ -34,8 +34,7 @@
     if (categoryIdElement) {
       categoryId = parseInt(categoryIdElement.value);
     } else {
-      alert('カテゴリを選択してください。');
-      return;
+      categoryId = null;
     }
 
     const jsonData = {
@@ -55,8 +54,12 @@
     })
     .then(response => {
       if (response.ok) {
-        const newTask = response.json();
-        alert('successfully added. please reload.'); // TODO ここで画面を非同期に更新する
+        const task = response.json();
+        if (task.categoryColor) {
+          appendChildFromTemplate(task.title, task.categoryName, task.categoryColor.hexCode, task.state.name, task.body);
+        } else {
+          appendChildFromTemplate(task.title, task.categoryName, null, task.state.name, task.body);
+        }
         document.getElementById('taskForm').reset();
       } else {
         response.json().then(error => {

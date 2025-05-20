@@ -83,7 +83,7 @@ mysql> SELECT * FROM `to_do_category`;
 ## 'to_do'テーブルを作成
 mysql> CREATE TABLE `to_do` (
          `id`          BIGINT(20) unsigned NOT NULL AUTO_INCREMENT,
-         `category_id` BIGINT(20) unsigned NOT NULL,
+         `category_id` BIGINT(20) unsigned,
          `title`       VARCHAR(255)        NOT NULL,
          `body`        TEXT,               NOT NULL DEFAULT (''),
          `state`       TINYINT UNSIGNED    NOT NULL,
