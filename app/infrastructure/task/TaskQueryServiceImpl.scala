@@ -17,8 +17,8 @@ class TaskQueryServiceImpl @Inject() (
 
   def fetchAll(): Future[Seq[ShowTaskUseCaseDto]] = {
     val showData = for {
-      (task, category) <- taskTable join categoryTable on (_.categoryId === _.id)
-    } yield (task.title, task.body, task.state, category.name, category.color)
+      (task, category) <- taskTable joinLeft categoryTable on (_.categoryId === _.id)
+    } yield (task.title, task.body, task.state, category.map(_.name), category.map(_.color))
     slave.run(showData.result).map(_.map((ShowTaskUseCaseDto.apply _).tupled))
   }
 
@@ -33,4 +33,7 @@ class TaskQueryServiceImpl @Inject() (
     val showData = categoryTable.map(category => (category.id, category.name, category.slug, category.color))
     slave.run(showData.result).map(_.map((ShowCategoryUseCaseDto.apply _).tupled))
   }
+
+  def getCategoryById(id: Category.Id): Future[Option[Category]] =
+    slave.run(categoryTable.filter(_.id === id).result.headOption)
 }
