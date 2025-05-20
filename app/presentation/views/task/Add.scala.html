@@ -55,11 +55,7 @@
     .then(response => {
       if (response.ok) {
         response.json().then(task => {
-          if (task.categoryColor) {
-            appendChildFromTemplate(task.title, task.categoryName, task.categoryColor.hexCode, task.state.name, task.body);
-          } else {
-            appendChildFromTemplate(task.title, task.categoryName, null, task.state.name, task.body);
-          }
+          appendChildFromTemplate(task.title, task.categoryName, task.categoryColor?.hexCode || null , task.state.name, task.body);
           document.getElementById('taskForm').reset();
         });
       } else {
