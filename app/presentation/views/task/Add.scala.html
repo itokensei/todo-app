@@ -47,18 +47,37 @@
     fetch('/task', {
       method: 'POST',
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Csrf-Token': csrfToken // ここで取得したトークンを設定
       },
       body: JSON.stringify(jsonData)
     })
-    .then(data => {
-      console.log('Success:', data);
-      // 送信成功時の処理（例：メッセージ表示、画面遷移など）
+    .then(response => {
+      if (response.ok) {
+        const newTask = response.json();
+        alert('successfully added. please reload.'); // TODO ここで画面を非同期に更新する
+        document.getElementById('taskForm').reset();
+      } else {
+        response.json().then(error => {
+          console.error('Error:',error)
+          let message = '';
+          if (error.hasOwnProperty('obj.title')) {
+            message += error['obj.title'][0].msg[0];
+          }
+          if (error.hasOwnProperty('obj.body')) {
+            message += error['obj.body'][0].msg[0];
+          }
+          if (message == '') {
+            message = 'An unexpected validation error occurred. ';
+          }
+          alert('Failed to add. ' + message);
+        });
+      }
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Error:', error);
-      // エラー発生時の処理
+      alert('An unexpected issue has occurred. ')
     });
   }
 </script>
