@@ -46,6 +46,7 @@
     fetch('/task', {
       method: 'POST',
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Csrf-Token': csrfToken // ここで取得したトークンを設定
       },
@@ -53,33 +54,33 @@
     })
     .then(response => {
       if (response.ok) {
-        return response.json();
+        const task = response.json();
+        if (task.categoryColor) {
+          appendChildFromTemplate(task.title, task.categoryName, task.categoryColor.hexCode, task.state.name, task.body);
+        } else {
+          appendChildFromTemplate(task.title, task.categoryName, null, task.state.name, task.body);
+        }
+        document.getElementById('taskForm').reset();
       } else {
-        return response.json().then(error => {
-          throw error;
+        response.json().then(error => {
+          console.error('Error:',error)
+          let message = '';
+          if (error.hasOwnProperty('obj.title')) {
+            message += error['obj.title'][0].msg[0];
+          }
+          if (error.hasOwnProperty('obj.body')) {
+            message += error['obj.body'][0].msg[0];
+          }
+          if (message == '') {
+            message = 'An unexpected validation error occurred. ';
+          }
+          alert('Failed to add. ' + message);
         });
       }
     })
-    .then(task => {
-      console.log(task);
-      if (task.categoryColor) {
-        appendChildFromTemplate(task.title, task.categoryName, task.categoryColor.hexCode, task.state.name, task.body);
-      } else {
-        appendChildFromTemplate(task.title, task.categoryName, null, task.state.name, task.body);
-      }
-      document.getElementById('taskForm').reset();
-    })
     .catch(error => {
       console.error('Error:', error);
-      let key;
-      if (error.hasOwnProperty('obj.title')) {
-        key = 'obj.title'
-      } else if (error.hasOwnProperty('obj.body')) {
-        key = 'obj.body'
-      } else {
-        key = 'obj.categoryId'
-      }
-      alert('Failed to add. ' + error[key][0].msg[0]);
+      alert('An unexpected issue has occurred. ')
     });
   }
 </script>
