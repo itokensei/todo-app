@@ -21,7 +21,7 @@ class TaskController @Inject() (
 
   def add() = Action.async { implicit request =>
     JsonHelper.bindFromRequest[AddTaskRequest].fold(
-      formWithErrors => Future(formWithErrors),
+      Future.successful,
       addTaskRequest =>
         addTaskUseCase.execute(addTaskRequest).map(task => Ok(Json.toJson(task)))
     )
