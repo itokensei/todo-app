@@ -10,4 +10,4 @@ GET     /                             presentation.controllers.HomeController.in
 GET     /assets/*file                 controllers.Assets.versioned(path="/public", file)
 
 # Task
-POST    /task                         presentation.controllers.HomeController.add()
+POST    /task                         presentation.controllers.TaskController.add()

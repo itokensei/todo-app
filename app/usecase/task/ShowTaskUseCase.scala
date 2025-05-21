@@ -5,5 +5,5 @@ import scala.concurrent.Future
 
 @Singleton
 class ShowTaskUseCase @Inject() (taskQueryService: TaskQueryService) {
-  def execute(): Future[Seq[ShowTaskUseCaseDto]] = taskQueryService.fetchAll()
+  def execute(): Future[Seq[TaskItemDto]] = taskQueryService.fetchAll()
 }

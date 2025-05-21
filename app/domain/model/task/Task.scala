@@ -4,22 +4,21 @@ import domain.model.task.Status.Todo
 import ixias.model._
 import ixias.util.EnumStatus
 import play.api.libs.json._
-import presentation.controllers.AddTaskRequest
 
 import java.time.LocalDateTime
 
-case class Task private (id: Option[Task.Id], categoryId: Option[Category.Id], title: String, body: String = "", state: Status = Todo, updatedAt: LocalDateTime = NOW, createdAt: LocalDateTime = NOW)
-  extends EntityModel[Task.Id]
+case class Task(
+  id:         Option[Task.Id],
+  categoryId: Option[Category.Id],
+  title:      String,
+  body:       String        = "",
+  state:      Status        = Todo,
+  updatedAt:  LocalDateTime = NOW,
+  createdAt:  LocalDateTime = NOW
+) extends EntityModel[Task.Id]
 object Task {
   val Id = the[Identity[Id]]
   type Id = Long @@ Task
-
-  def apply(addTaskRequest: AddTaskRequest): Task#WithNoId = Task(
-    id         = None,
-    categoryId = addTaskRequest.categoryId,
-    title      = addTaskRequest.title,
-    body       = addTaskRequest.body
-  ).toWithNoId
 }
 
 sealed abstract class Status(val code: Short, val name: String) extends EnumStatus
