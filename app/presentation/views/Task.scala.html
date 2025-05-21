@@ -1,7 +1,8 @@
 @import usecase.task._
+@import domain.model.task.Status
 @import helper._
 @import presentation.controllers._
-@(vv: presentation.views.model.ViewValueCommon, tasks: Seq[TaskItemDto], categories: Seq[ShowCategoryUseCaseDto])(implicit request: MessagesRequestHeader)
+@(vv: presentation.views.model.ViewValueCommon, tasks: Seq[TaskItemDto], categories: Seq[ShowCategoryUseCaseDto], allState: Seq[Status])(implicit request: MessagesRequestHeader)
 
 @nullCategoryName = @{"未分類"}
 @nullCategoryColor = @{"#000000"}
@@ -15,10 +16,12 @@
           @task.TaskItem(nullCategoryName, nullCategoryColor)
           <script>
           @tasks.map{task =>
-              appendChildFromTemplate('@task.title', '@{task.categoryName.getOrElse(nullCategoryName)}', '@{task.categoryColor.fold(nullCategoryColor)(_.hexCode)}', '@task.state.name', '@task.body')
+              appendChildFromTemplate('@task.id','@task.title', '@{task.categoryId.getOrElse(null)}', '@{task.categoryName.getOrElse(nullCategoryName)}', '@{task.categoryColor.fold(nullCategoryColor)(_.hexCode)}', '@task.state.code', '@task.state.name', '@task.body')
           }
           </script>
       </ul>
     </li>
 </ul>
 }
+
+@task.Update(categories, allState, nullCategoryName)
