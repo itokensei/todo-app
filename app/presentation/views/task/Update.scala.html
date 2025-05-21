@@ -1,7 +1,7 @@
 @import domain.model.task.Status
 @import usecase.task.ShowCategoryUseCaseDto
 @import helper._
-@(categories: Seq[ShowCategoryUseCaseDto], allState: Seq[Status], nullCategoryName: String)(implicit request: MessagesRequestHeader)
+@(categories: Seq[ShowCategoryUseCaseDto], allState: Seq[Status], nullCategoryName: String, nullCategoryColor: String)(implicit request: MessagesRequestHeader)
 
 <div id="editModalOverlay" class="modal-overlay" style="display: none;">
     <div id="editModalContent" class="modal-content">
@@ -108,7 +108,7 @@
        .then(response => {
          if (response.ok) {
            response.json().then(task => {
-             // TODO Todoリストを非同期更新
+             updateTaskItem(task.id, task.title, task.categoryId, task.categoryName, task.categoryColor?.hexCode, task.state.code, task.state.name, task.body)
              closeEditModal();
            });
          } else {
@@ -124,6 +124,19 @@
          alert('An unexpected issue has occurred. ')
        });
   };
+
+  function updateTaskItem(id, title, categoryId, categoryName, colorHexCode, stateCode, stateName, body) {
+    const taskItem = document.getElementById('taskList').querySelector(`[value="${id}"]`);
+    taskItem.querySelector('.title').textContent = title;
+    taskItem.querySelector('.categoryName').textContent = categoryName || '@nullCategoryName';
+    taskItem.querySelector('.categoryName').style.backgroundColor = colorHexCode || '@nullCategoryColor';
+    taskItem.querySelector('.status').textContent = stateName;
+    taskItem.querySelector('.body').textContent = body;
+    taskItem.querySelector('.editButton').addEventListener('click',() =>
+      showEditForm(id, title, categoryId, stateCode, body)
+    );
+  };
+
   function closeEditModal() {
     editModalOverlay.style.display = 'none';
   };
