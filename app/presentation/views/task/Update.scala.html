@@ -114,8 +114,17 @@
          } else {
            response.json().then(error => {
             console.error('Validation Error: ',error)
-            // TODO バリデーションエラー処理
-            alert('Failed to update. ');
+            let message = '';
+            if (error.hasOwnProperty('obj.title')) {
+              message += error['obj.title'][0].msg[0];
+            }
+            if (error.hasOwnProperty('obj.body')) {
+              message += error['obj.body'][0].msg[0];
+            }
+            if (message == '') {
+              message = 'An unexpected validation error occurred. ';
+            }
+            alert('Failed to update todo. ' + message);
            });
          };
        })
