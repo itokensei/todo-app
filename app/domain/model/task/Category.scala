@@ -19,6 +19,7 @@ object Category extends JsonEnvReads {
   val Id = the[Identity[Id]]
   type Id = Long @@ Category
 
+  implicit val writes: Writes[Id] = (o: Id) => JsNumber(Id.unwrap(o))
   implicit val reads: Reads[Id] = idAsNumberReads[Id]
 }
 

@@ -18,7 +18,7 @@ class TaskQueryServiceImpl @Inject() (
   def fetchAll(): Future[Seq[TaskItemDto]] = {
     val showData = for {
       (task, category) <- taskTable joinLeft categoryTable on (_.categoryId === _.id)
-    } yield (task.title, task.body, task.state, category.map(_.name), category.map(_.color))
+    } yield (task.id, task.title, task.body, task.state, category.map(_.id), category.map(_.name), category.map(_.color))
     slave.run(showData.result).map(_.map((TaskItemDto.apply _).tupled))
   }
 
