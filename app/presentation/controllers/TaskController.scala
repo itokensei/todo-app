@@ -7,7 +7,7 @@ package presentation.controllers
 import ixias.play.api.mvc.JsonHelper
 import play.api.libs.json.Json
 import play.api.mvc._
-import usecase.task.{ AddTaskUseCase, UpdateTaskUseCase }
+import usecase.task.{ AddTaskUseCase, DeleteTaskUseCase, UpdateTaskUseCase }
 
 import javax.inject._
 import scala.concurrent.Future
@@ -16,7 +16,8 @@ import scala.concurrent.Future
 class TaskController @Inject() (
   val controllerComponents: ControllerComponents,
   addTaskUseCase:           AddTaskUseCase,
-  updateTaskUseCase:        UpdateTaskUseCase
+  updateTaskUseCase:        UpdateTaskUseCase,
+  deleteTaskUseCase:        DeleteTaskUseCase
 ) extends BaseController {
   implicit val ec: scala.concurrent.ExecutionContext = controllerComponents.executionContext
 
@@ -33,6 +34,14 @@ class TaskController @Inject() (
       Future.successful,
       updateTaskRequest =>
         updateTaskUseCase.execute(updateTaskRequest).map(task => Ok(Json.toJson(task)))
+    )
+  }
+
+  def delete() = Action.async { implicit request =>
+    JsonHelper.bindFromRequest[DeleteTaskRequest].fold(
+      Future.successful,
+      deleteTaskRequest =>
+        deleteTaskUseCase.execute(deleteTaskRequest).map { case () => NoContent }
     )
   }
 }

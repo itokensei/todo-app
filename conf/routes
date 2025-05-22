@@ -12,3 +12,4 @@ GET     /assets/*file                 controllers.Assets.versioned(path="/public
 # Task
 POST    /task                         presentation.controllers.TaskController.add()
 PUT     /task                         presentation.controllers.TaskController.update()
+DELETE  /task                         presentation.controllers.TaskController.delete()
