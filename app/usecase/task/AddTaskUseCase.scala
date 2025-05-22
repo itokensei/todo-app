@@ -20,16 +20,18 @@ class AddTaskUseCase @Inject() (
       body       = addTaskRequest.body,
       categoryId = addTaskRequest.categoryId
     ).toWithNoId
-    val execution      = taskRepository.add(taskWithNoId)
+    val taskIdFuture   = taskRepository.add(taskWithNoId)
     val task           = taskWithNoId.v
     val categoryFuture = task.categoryId.fold(Future.successful(none[Category]))(taskQueryService.getCategoryById)
     for {
-      _        <- execution
+      taskId   <- taskIdFuture
       category <- categoryFuture
     } yield TaskItemDto(
+      id            = taskId,
       title         = task.title,
       body          = task.body,
       state         = task.state,
+      categoryId    = task.categoryId,
       categoryName  = category.map(_.name),
       categoryColor = category.map(_.color)
     )

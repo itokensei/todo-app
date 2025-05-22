@@ -1,0 +1,152 @@
+@import domain.model.task.Status
+@import usecase.task.ShowCategoryUseCaseDto
+@import helper._
+@(categories: Seq[ShowCategoryUseCaseDto], allState: Seq[Status], nullCategoryName: String, nullCategoryColor: String)(implicit request: MessagesRequestHeader)
+
+<div id="editModalOverlay" class="modal-overlay" style="display: none;">
+    <div id="editModalContent" class="modal-content">
+        <h2>Todo編集</h2>
+        <form id="taskUpdateForm">
+            @CSRF.formField
+            <input type="hidden" id="updateTaskId" name="id">
+            <div>
+                <label for="updateTaskTitle">タイトル:</label>
+                <input type="text" id="updateTaskTitle" name="title">
+            </div>
+            <div>
+                <label for="updateTaskBody">内容:</label>
+                <textarea id="updateTaskBody" name="body"></textarea>
+            </div>
+            <div>
+                <label>カテゴリ:</label>
+                @for(category <- categories) {
+                <input type="radio" id="updateTaskCategoryId_@category.id" name="updateTaskCategoryRadio" value="@category.id">
+                <label for="updateTaskCategoryId_@category.id">@category.name</label>
+                }
+                <input type="radio" id="updateTaskCategoryId_null" name="updateTaskCategoryRadio" value="">
+                <label for="updateTaskCategoryId_null">@nullCategoryName</label>
+            </div>
+            <div>
+                <label>ステータス:</label>
+                @for(state <- allState) {
+                <input type="radio" id="updateTaskStatusCode_@state.code" name="updateTaskStatusRadio" value="@state.code">
+                <label for="updateTaskStatusCode_@state.code">@state.name</label>
+                }
+            </div>
+            <button type="button" onclick="sendUpdatedTaskData()">更新</button>
+            <button id="updateTaskResetButton" type="button">リセット</button>
+        </form>
+        <button type="button" onclick="closeEditModal()">閉じる</button>
+    </div>
+</div>
+
+<style>
+    /* ポップアップのスタイル (例) */
+    .modal-overlay {
+      display: none; /* 初期状態は非表示 */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+</style>
+
+<script>
+  function showEditForm(id, title, categoryId, stateCode, body) {
+    document.getElementById('updateTaskId').value = id;
+    document.getElementById('updateTaskTitle').value = title;
+    document.getElementById('updateTaskCategoryId_' + (categoryId || "null")).checked = true;
+    document.getElementById('updateTaskStatusCode_' + stateCode).checked = true;
+    document.getElementById('updateTaskBody').value = body;
+    document.getElementById('updateTaskResetButton').addEventListener('click',() =>
+        showEditForm(id, title, categoryId, stateCode, body)
+      );
+    editModalOverlay.style.display = 'flex';
+  };
+
+  function sendUpdatedTaskData() {
+    const id = parseInt(document.getElementById('updateTaskId').value);
+    const title = document.getElementById('updateTaskTitle').value;
+    const body = document.getElementById('updateTaskBody').value;
+    const categoryIdElement = document.querySelector('input[name="updateTaskCategoryRadio"]:checked');
+    const categoryId = parseInt(categoryIdElement.value) || null;
+    const statusCodeElement = document.querySelector('input[name="updateTaskStatusRadio"]:checked');
+    let statusCode;
+    if (statusCodeElement) {
+      statusCode = parseInt(statusCodeElement.value);
+    } else {
+      alert('Please select status.');
+    }
+    const requestData = {
+      id: id,
+      title: title,
+      body: body,
+      categoryId: categoryId,
+      state: statusCode
+    };
+
+    fetch('/task', {
+         method: 'PUT',
+         headers: {
+           'Accept': 'application/json',
+           'Content-Type': 'application/json',
+           'Csrf-Token': csrfToken
+         },
+         body: JSON.stringify(requestData)
+       })
+       .then(response => {
+         if (response.ok) {
+           response.json().then(task => {
+             updateTaskItem(task.id, task.title, task.categoryId, task.categoryName, task.categoryColor?.hexCode, task.state.code, task.state.name, task.body)
+             closeEditModal();
+           });
+         } else {
+           response.json().then(error => {
+            console.error('Validation Error: ',error)
+            let message = '';
+            if (error.hasOwnProperty('obj.title')) {
+              message += error['obj.title'][0].msg[0];
+            }
+            if (error.hasOwnProperty('obj.body')) {
+              message += error['obj.body'][0].msg[0];
+            }
+            if (message == '') {
+              message = 'An unexpected validation error occurred. ';
+            }
+            alert('Failed to update todo. ' + message);
+           });
+         };
+       })
+       .catch(error => {
+         console.error('TaskUpdateError:', error);
+         alert('An unexpected issue has occurred. ')
+       });
+  };
+
+  function updateTaskItem(id, title, categoryId, categoryName, colorHexCode, stateCode, stateName, body) {
+    const taskItem = document.getElementById('taskList').querySelector(`[value="${id}"]`);
+    taskItem.querySelector('.title').textContent = title;
+    taskItem.querySelector('.categoryName').textContent = categoryName || '@nullCategoryName';
+    taskItem.querySelector('.categoryName').style.backgroundColor = colorHexCode || '@nullCategoryColor';
+    taskItem.querySelector('.status').textContent = stateName;
+    taskItem.querySelector('.body').textContent = body;
+    taskItem.querySelector('.editButton').addEventListener('click',() =>
+      showEditForm(id, title, categoryId, stateCode, body)
+    );
+  };
+
+  function closeEditModal() {
+    editModalOverlay.style.display = 'none';
+  };
+</script>

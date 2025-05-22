@@ -29,9 +29,10 @@ class HomeController @Inject() (
 
     val tasksFuture      = showTaskUseCase.execute()
     val categoriesFuture = showCategoryUseCase.execute()
+    val allState         = domain.model.task.Status.values
     for {
       tasks      <- tasksFuture
       categories <- categoriesFuture
-    } yield Ok(views.html.Task(vv, tasks, categories))
+    } yield Ok(views.html.Task(vv, tasks, categories, allState))
   }
 }

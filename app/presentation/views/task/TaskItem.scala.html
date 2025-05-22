@@ -1,20 +1,22 @@
 @(nullCategoryName: String, nullCategoryColor: String)
 
 <template id="taskItemTemplate">
-  <li>
+  <li class="taskItem" value="">
     <div><a class="title" style="width: 800px;"></a>
       <a class="categoryName" style="background-color: @nullCategoryColor; color: white; padding: 2px; border-radius: 5px;">
         @nullCategoryName</a><a class="status"></a>
     </div>
-    <div class="body" style="padding-left: 40px; margin-bottom: 20px;"></div>
+    <div class="body" style="padding-left: 40px;"></div>
+    <button class="editButton"  style="margin-bottom: 20px;">編集</button>
   </li>
 </template>
 
 <script>
-  function appendChildFromTemplate(title, categoryName, colorHexCode, status, body) {
+  function appendChildFromTemplate(id, title, categoryId, categoryName, colorHexCode, stateCode, stateName, body) {
     if ("content" in document.createElement('template')) {
       var template = document.getElementById('taskItemTemplate');
       var clone = template.content.cloneNode(true);
+      clone.querySelector('.taskItem').value = id;
       clone.querySelector('.title').textContent = title;
       if (categoryName) {
         clone.querySelector('.categoryName').textContent = categoryName;
@@ -22,8 +24,11 @@
       if (colorHexCode) {
         clone.querySelector('.categoryName').style.backgroundColor = colorHexCode;
       };
-      clone.querySelector('.status').textContent = status;
+      clone.querySelector('.status').textContent = stateName;
       clone.querySelector('.body').textContent = body;
+      clone.querySelector('.editButton').addEventListener('click',() =>
+        showEditForm(id, title, categoryId, stateCode, body)
+      );
       document.getElementById('taskList').appendChild(clone);
     } else {
       console.error('Unsupported Feature: The HTML <template> element is not recognized by your browser.')
