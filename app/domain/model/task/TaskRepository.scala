@@ -17,5 +17,5 @@ trait TaskRepository {
   /**
     * Delete Task Data
     */
-  def remove(id: Task.Id): Future[Option[Task#EmbeddedId]]
+  def remove(id: Task.Id): Future[Option[Task.Id]]
 }
