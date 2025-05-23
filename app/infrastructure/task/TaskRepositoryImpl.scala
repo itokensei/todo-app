@@ -40,11 +40,11 @@ class TaskRepositoryImpl @Inject() (
   /**
     * Delete Task Data
     */
-  def remove(id: Task.Id): Future[Option[Task#EmbeddedId]] = {
+  def remove(id: Task.Id): Future[Option[Task.Id]] = {
     master.run {
       taskTable.filter(_.id === id).delete.map {
         case 0 => None
-        case _ => Some(id.asInstanceOf[Task#EmbeddedId])
+        case _ => Some(id)
       }
     }
   }

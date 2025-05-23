@@ -8,6 +8,7 @@
     </div>
     <div class="body" style="padding-left: 40px;"></div>
     <button class="editButton"  style="margin-bottom: 20px;">編集</button>
+    <button class="deleteButton" style="margin-bottom: 20px;">削除</button>
   </li>
 </template>
 
@@ -28,6 +29,9 @@
       clone.querySelector('.body').textContent = body;
       clone.querySelector('.editButton').addEventListener('click',() =>
         showEditForm(id, title, categoryId, stateCode, body)
+      );
+      clone.querySelector('.deleteButton').addEventListener('click',() =>
+        showDeleteModal(id)
       );
       document.getElementById('taskList').appendChild(clone);
     } else {

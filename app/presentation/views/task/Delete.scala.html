@@ -1,0 +1,61 @@
+<div id="deleteModalOverlay" class="modal-overlay" style="display: none;">
+  <div id="deleteModalContent" class="modal-content">
+    <h2>Todo削除</h2>
+    <div>本当にこのTodoを削除しますか？</div>
+    <ul id="deleteTaskList"></ul>
+    <div>
+      <button type="button" onclick="closeDeleteModal()">キャンセル</button>
+      <button type="button" onclick="sendDeleteTaskData()" style="background-color: red; color: white;">実行</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showDeleteModal(id) {
+    const originalTaskItem = document.getElementById('taskList').querySelector(`[value="${id}"]`);
+    const copiedTaskItem = originalTaskItem.cloneNode(true);
+    copiedTaskItem.removeAttribute('id'); // copyしたItemにid属性があれば削除しておく
+    copiedTaskItem.querySelector('.editButton').remove();
+    copiedTaskItem.querySelector('.deleteButton').remove();
+    const deleteTaskList = document.getElementById('deleteTaskList')
+    deleteTaskList.innerHTML = ''; // 削除ボタンを何度も押すと、削除しようとしたtaskがリストアップされてしまう。
+    deleteTaskList.appendChild(copiedTaskItem);
+    deleteModalOverlay.style.display = 'flex';
+  };
+
+  function sendDeleteTaskData() {
+    const id = document.getElementById('deleteTaskList').querySelector('.taskItem').value;
+    const requestData = {
+     id: id
+    };
+    fetch('/task', {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Csrf-Token': csrfToken
+      },
+      body: JSON.stringify(requestData)
+    })
+    .then(response => {
+      if (response.ok) {
+        const originalTaskItem = document.getElementById('taskList').querySelector(`[value="${id}"]`);
+        originalTaskItem.remove();
+        closeDeleteModal();
+      } else {
+      response.json().then(error => {
+        console.error('TaskDeleteError:', error);
+        alert('Faild to delete task. ');
+      });
+      }
+    })
+    .catch(error => {
+      console.error('TaskDeleteError:', error);
+      alert('An unexpected issue has occurred. ');
+    });
+  };
+
+  function closeDeleteModal() {
+    deleteModalOverlay.style.display = 'none';
+  };
+</script>
