@@ -4,10 +4,10 @@
 
 package presentation.controllers
 
+import play.api.libs.json.Json
 import play.api.mvc._
-import presentation.views
 import presentation.views.model.ViewValueHome
-import usecase.task.{ ShowCategoryUseCase, ShowTaskUseCase }
+import usecase.task.{ ShowCategoryUseCase, ShowTaskUseCase, ShowTaskUseCaseDto }
 
 import javax.inject._
 
@@ -27,12 +27,12 @@ class HomeController @Inject() (
       jsSrc  = Seq("main.js")
     )
 
-    val tasksFuture      = showTaskUseCase.execute()
-    val categoriesFuture = showCategoryUseCase.execute()
-    val allState         = domain.model.task.Status.values
+    val allTasksFuture      = showTaskUseCase.execute()
+    val allCategoriesFuture = showCategoryUseCase.execute()
+    val allStatus           = domain.model.task.Status.values
     for {
-      tasks      <- tasksFuture
-      categories <- categoriesFuture
-    } yield Ok(views.html.Task(vv, tasks, categories, allState))
+      allTasks      <- allTasksFuture
+      allCategories <- allCategoriesFuture
+    } yield Ok(Json.toJson(ShowTaskUseCaseDto(allTasks, allStatus, allCategories)))
   }
 }

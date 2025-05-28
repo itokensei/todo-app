@@ -20,7 +20,7 @@ object Category extends JsonEnvReads {
   type Id = Long @@ Category
 
   implicit val writes: Writes[Id] = (o: Id) => JsNumber(Id.unwrap(o))
-  implicit val reads: Reads[Id] = idAsNumberReads[Id]
+  implicit val reads:  Reads[Id]  = idAsNumberReads[Id]
 }
 
 sealed abstract class Color(val code: Short, val hexCode: String) extends EnumStatus

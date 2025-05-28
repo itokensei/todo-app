@@ -22,7 +22,7 @@ object Task extends JsonEnvReads {
   type Id = Long @@ Task
 
   implicit val writes: Writes[Task.Id] = (o: Task.Id) => JsNumber(Id.unwrap(o))
-  implicit val reads: Reads[Id] = idAsNumberReads[Id]
+  implicit val reads:  Reads[Id]       = idAsNumberReads[Id]
 }
 
 sealed abstract class Status(val code: Short, val name: String) extends EnumStatus
