@@ -17,6 +17,7 @@ DELETE  /task                         presentation.web.controllers.TaskControlle
 
 # API
 # Task
+GET     /api/tasks                    presentation.api.controllers.TaskController.list()
 POST    /api/tasks                    presentation.api.controllers.TaskController.add()
 PUT     /api/tasks                    presentation.api.controllers.TaskController.update()
 DELETE  /api/tasks                    presentation.api.controllers.TaskController.delete()
