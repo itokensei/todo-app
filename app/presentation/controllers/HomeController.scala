@@ -4,10 +4,9 @@
 
 package presentation.controllers
 
-import play.api.libs.json.Json
 import play.api.mvc._
 import presentation.views.model.ViewValueHome
-import usecase.task.{ ShowCategoryUseCase, ShowTaskUseCase, ShowTaskUseCaseDto }
+import usecase.task.{ ShowCategoryUseCase, ShowTaskUseCase }
 
 import javax.inject._
 
@@ -33,6 +32,6 @@ class HomeController @Inject() (
     for {
       allTasks      <- allTasksFuture
       allCategories <- allCategoriesFuture
-    } yield Ok(Json.toJson(ShowTaskUseCaseDto(allTasks, allStatus, allCategories)))
+    } yield Ok(presentation.views.html.Task(vv, allTasks, allCategories, allStatus))
   }
 }
