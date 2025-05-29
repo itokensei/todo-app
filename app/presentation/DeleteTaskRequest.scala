@@ -1,4 +1,4 @@
-package presentation.controllers
+package presentation
 
 import domain.model.task.Task
 import play.api.libs.json.{ Json, Reads }

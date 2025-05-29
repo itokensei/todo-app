@@ -2,11 +2,12 @@
   * to do sample project
   */
 
-package presentation.controllers
+package presentation.web.controllers
 
 import play.api.mvc._
-import presentation.views.model.ViewValueHome
-import usecase.task.{ ShowCategoryUseCase, ShowTaskUseCase }
+import presentation.web.views.html.Task
+import presentation.web.views.model.ViewValueHome
+import usecase.task.{ShowCategoryUseCase, ShowTaskUseCase}
 
 import javax.inject._
 
@@ -32,6 +33,6 @@ class HomeController @Inject() (
     for {
       allTasks      <- allTasksFuture
       allCategories <- allCategoriesFuture
-    } yield Ok(presentation.views.html.Task(vv, allTasks, allCategories, allStatus))
+    } yield Ok(Task(vv, allTasks, allCategories, allStatus))
   }
 }

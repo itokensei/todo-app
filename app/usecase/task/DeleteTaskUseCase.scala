@@ -4,7 +4,7 @@ import cats.data.EitherT
 import domain.model.task.TaskRepository
 import play.api.libs.json.JsError
 import play.api.libs.json.JsResult.Exception
-import presentation.controllers.DeleteTaskRequest
+import presentation.DeleteTaskRequest
 import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
 

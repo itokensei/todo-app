@@ -1,4 +1,4 @@
-package presentation.controllers
+package presentation
 
 import domain.model.task.Category
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
