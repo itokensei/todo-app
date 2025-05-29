@@ -3,6 +3,7 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
+# Web
 # An example controller showing a sample home page
 GET     /                             presentation.web.controllers.HomeController.index()
 
@@ -13,3 +14,9 @@ GET     /assets/*file                 controllers.Assets.versioned(path="/public
 POST    /task                         presentation.web.controllers.TaskController.add()
 PUT     /task                         presentation.web.controllers.TaskController.update()
 DELETE  /task                         presentation.web.controllers.TaskController.delete()
+
+# API
+# Task
+POST    /api/tasks                    presentation.api.controllers.TaskController.add()
+PUT     /api/tasks                    presentation.api.controllers.TaskController.update()
+DELETE  /api/tasks                    presentation.api.controllers.TaskController.delete()
