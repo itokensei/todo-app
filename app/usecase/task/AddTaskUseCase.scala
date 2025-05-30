@@ -2,7 +2,7 @@ package usecase.task
 
 import cats.implicits.none
 import domain.model.task.{ Category, Task, TaskRepository }
-import presentation.controllers.AddTaskRequest
+import presentation.AddTaskRequest
 
 import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }

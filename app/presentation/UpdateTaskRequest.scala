@@ -1,4 +1,4 @@
-package presentation.controllers
+package presentation
 
 import domain.model.task.{ Category, Status, Task }
 import play.api.libs.functional.syntax.toFunctionalBuilderOps

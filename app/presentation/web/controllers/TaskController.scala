@@ -2,11 +2,12 @@
   * to do sample project
   */
 
-package presentation.controllers
+package presentation.web.controllers
 
 import ixias.play.api.mvc.JsonHelper
 import play.api.libs.json.Json
 import play.api.mvc._
+import presentation.{ AddTaskRequest, DeleteTaskRequest, UpdateTaskRequest }
 import usecase.task.{ AddTaskUseCase, DeleteTaskUseCase, UpdateTaskUseCase }
 
 import javax.inject._

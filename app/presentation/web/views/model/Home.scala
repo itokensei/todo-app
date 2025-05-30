@@ -2,7 +2,7 @@
   * to do sample project
   */
 
-package presentation.views.model
+package presentation.web.views.model
 
 // Topページのviewvalue
 case class ViewValueHome(

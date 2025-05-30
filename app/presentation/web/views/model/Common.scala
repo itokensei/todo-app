@@ -1,7 +1,7 @@
 /**
   * to do sample project
   */
-package presentation.views.model
+package presentation.web.views.model
 
 /**
   * 全ページに最低限必要な要素をtrait化。親のhtmlは引数でこのtraitを受け取ることで

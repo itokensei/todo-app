@@ -4,7 +4,7 @@ import cats.implicits.none
 import domain.model.task.{ Category, Task, TaskRepository }
 import play.api.libs.json.JsError
 import play.api.libs.json.JsResult.Exception
-import presentation.controllers.UpdateTaskRequest
+import presentation.UpdateTaskRequest
 
 import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ ExecutionContext, Future }
